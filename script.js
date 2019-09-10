@@ -18,7 +18,8 @@ const Tree = (w, h) => {
         dir: [0, -1, 0, 0],
         r: initialR,
         scale: [0.9, 1.05],
-        children: [1, 0.01, 0.005]
+        children: [1, 0.01, 0.005],
+        depth: 0
       });
       
       const numRoots = Math.round(rand(3, 6));
@@ -40,7 +41,8 @@ const Tree = (w, h) => {
           dir,
           r: initialR,
           scale: [0.7, 1.01],
-          children: [1, 0.005, 0.005]
+          children: [1, 0.005, 0.005],
+          depth: 0
         });
       }
       
@@ -54,7 +56,13 @@ const Tree = (w, h) => {
       
       if (spawnPoint.r < 0.1) return;
       
-      tree.add({ x, y, z, r: spawnPoint.r });
+      tree.add({
+        x,
+        y,
+        z,
+        r: spawnPoint.r,
+        depth: spawnPoint.depth
+      });
       
       spawnPoint.children.forEach(probability => {
         if (rand(0,1) > probability) return;
@@ -88,7 +96,8 @@ const Tree = (w, h) => {
           dir: nextDir,
           r: nextR,
           scale: spawnPoint.scale,
-          children: spawnPoint.children
+          children: spawnPoint.children,
+          depth: spawnPoint.depth + 1
         });
       });
     },
@@ -119,6 +128,12 @@ const Tree = (w, h) => {
       circle.setAttribute('fill', '#FFF');
       circle.setAttribute('stroke', '#000');
       circle.setAttribute('stroke-width', 1);
+      circle.setAttribute(
+        'style',
+        `
+          animation-delay: ${element.depth*10}ms;
+          transform-origin: ${element.x}px ${element.y}px;
+        `);
       
       return circle;
     },
@@ -142,8 +157,9 @@ const Tree = (w, h) => {
 };
 
 const generate = () => {
-  while (document.body.firstChild) {
-    document.body.removeChild(document.body.firstChild);
+  const svg = document.querySelector('svg');
+  if (svg) {
+    svg.parentNode.removeChild(svg);
   }
 
   document.body.appendChild(Tree(800, 600).start().growAll().rendered());

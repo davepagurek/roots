@@ -15,4 +15,40 @@ svg {
   width: 100%;
   max-height: 100vh;
   background-color: #FFF;
+  z-index: 1;
+}
+
+ellipse {
+  animation-name: grow;
+  animation-duration: 0.3s;
+  animation-fill-mode: both;
+}
+
+p {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  z-index: 2;
+  margin: 10px;
+  background: rgba(255,255,255,0.7);
+}
+
+@keyframes grow {
+  0% {
+    transform: scale(0);
+    /*opacity: 0;*/
+  }
+  100% {
+    transform: scale(1);
+    /*opacity: 1;*/
+  }
+}
+
+@keyframes fade {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
