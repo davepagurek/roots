@@ -134,6 +134,9 @@ const Tree = (w, h) => {
           animation-delay: ${element.depth*10}ms;
           transform-origin: ${element.x}px ${element.y}px;
         `);
+        if (element.r < 3) {
+          circle.classList.add('small');
+        }
       
       return circle;
     },
